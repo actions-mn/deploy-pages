@@ -1,0 +1,62 @@
+name: 'deploy-pages'
+description: 'Perform metanorma site generate and upload pages artifact'
+inputs:
+  token:
+    description: Required if destination='default'. Just pass `secrets.GITHUB_TOKEN`
+    default: ''
+    required: true
+  artifact-name:
+    description: Name of artifact to download
+    default: github-pages
+    required: false
+  source-dir:
+    description: Source directory for generated site see `output-dir` of `actions-mn/build-and-publish` action
+    default: _site
+    required: false
+  preview-branch:
+    description: Name of pages branch
+    default: gh-pages
+    required: false
+  umbrella-dir: Directory where PR preview sites will be stored
+    description:
+    default: pr-preview
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+  - if: ${{ github.event_name != 'pull_request' || github.event.action != 'closed' }}
+    uses: actions/download-artifact@v3
+    with:
+      name: github-pages
+      path: ${{ inputs.source-dir }}
+
+  # on default branch push
+  - if: ${{ contains(fromJSON('["refs/heads/master", "refs/heads/main"]'), github.ref) }}
+    uses: JamesIves/github-pages-deploy-action@v4
+    with:
+      folder: ${{ inputs.source-dir }}
+      branch: gh-pages
+      clean-exclude: pr-preview
+      token: ${{ inputs.token }}
+
+  # on pull request create/update
+  - if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
+    uses: rossjrw/pr-preview-action@v1
+    with:
+      source-dir: ${{ inputs.source-dir }}
+      preview-branch: gh-pages
+      umbrella-dir: pr-preview
+      action: auto
+      token: ${{ inputs.token }}
+
+  # on pull request close
+  - if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' }}
+    uses: rossjrw/pr-preview-action@v1
+    with:
+      source-dir: .
+      preview-branch: gh-pages
+      umbrella-dir: pr-preview
+      action: auto
+      token: ${{ inputs.token }}
+
