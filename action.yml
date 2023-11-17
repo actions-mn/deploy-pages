@@ -17,8 +17,8 @@ inputs:
     description: Name of pages branch
     default: gh-pages
     required: false
-  umbrella-dir: Directory where PR preview sites will be stored
-    description:
+  umbrella-dir:
+    description: Directory where PR preview sites will be stored
     default: pr-preview
     required: false
 
