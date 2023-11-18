@@ -28,7 +28,7 @@ Typically, you can utilize it by providing only one parameter, namely token
 ...
 + uses: actions-mn/deploy-pages@main
   with:
-    token: ${{ secrets.METANORMA_CI_ }}
+    token: ${{ secrets.CI_PAT_TOKEN }}
 ```
 
 > *Important note*. Make sure you pass `token`, that is allow to GitHub Pages deployment
