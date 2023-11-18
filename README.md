@@ -18,7 +18,15 @@ If you don't need PR deployment use other actions like [`actions/deploy-pages@v1
 
 1. Make sure that [GitHub Pages enabled in settings](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site#creating-your-site)
 1. Site artifact must be built before. `actions-mn/build-and-publish@v1` can be used for this
+1. Define all required `permissions` in workflow like this
 
+   ```yml
+   permissions:
+     pull-requests: write
+     contents: read
+     pages: write
+   ```
+1. Use PAT token that has permissions for pull request comment and git push
 
 ## Scenario
 
@@ -28,7 +36,7 @@ Typically, you can utilize it by providing only one parameter, namely token
 ...
 + uses: actions-mn/deploy-pages@main
   with:
-    token: ${{ secrets.CI_PAT_TOKEN }}
+    token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 > *Important note*. Make sure you pass `token`, that is allow to GitHub Pages deployment
@@ -57,11 +65,13 @@ on:
     - closed
 
 permissions:
+  pull-requests: write
   contents: read
   pages: write
 
 jobs:
   build:
+    if: ${{ github.event.action != 'closed' }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -77,15 +87,24 @@ jobs:
       uses: actions-mn/build-and-publish@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+        destination: artifact
         agree-to-terms: true
 
-  deploy:
+  deploy-gh-pages:
     runs-on: ubuntu-latest
     needs: build
     steps:
     - name: Deploy to GitHub Pages
-      uses: actions-mn/deploy-pages@v1
+      uses: actions-mn/deploy-pages@main
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.PAT_TOKEN }}
 
+  clean-gh-pages:
+    if: ${{ github.event.action == 'closed' }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to GitHub Pages
+      uses: actions-mn/deploy-pages@main
+      with:
+        token: ${{ secrets.PAT_TOKEN }}
 ```
