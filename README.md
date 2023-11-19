@@ -1,7 +1,7 @@
 # deploy-pages
 
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/actions-mn/deploy-pages)
-[![GitHub actions](https://github.com/actions-mn/build-and-publish/actions/workflows/test.yml/badge.svg)](https://github.com/actions-mn/deploy-pages/actions/workflows/test.yml)
+[![GitHub actions](https://github.com/actions-mn/deploy-pages/actions/workflows/test.yml/badge.svg)](https://github.com/actions-mn/deploy-pages/actions/workflows/test.yml)
 
 Meta action to deploy github pages with PR deployment ability in one step
 
