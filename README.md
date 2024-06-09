@@ -3,7 +3,7 @@
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/actions-mn/deploy-pages)
 [![GitHub actions](https://github.com/actions-mn/deploy-pages/actions/workflows/test.yml/badge.svg)](https://github.com/actions-mn/deploy-pages/actions/workflows/test.yml)
 
-Meta action to deploy github pages with PR deployment ability in one step
+Meta action to deploy GitHub Pages with PR deployment ability in one step
 
 If you don't need PR deployment use other actions like [`actions/deploy-pages@v1`](https://github.com/actions/deploy-pages)
 
@@ -26,11 +26,11 @@ If you don't need PR deployment use other actions like [`actions/deploy-pages@v1
      contents: read
      pages: write
    ```
-1. Use PAT token that has permissions for pull request comment and git push
+1. Use PAT token that has permissions for pull request comments and git push
 
 ## Scenario
 
-Typically, you can utilize it by providing only one parameter, namely token
+Typically, you can utilize it by providing only one parameter `token`
 
 ```yml
 ...
@@ -39,14 +39,14 @@ Typically, you can utilize it by providing only one parameter, namely token
     token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-> *Important note*. Make sure you pass `token`, that is allow to GitHub Pages deployment
+> *Important note*. Make sure you pass `token`, that is allowed to do GitHub Pages deployment
 
 Except `token`, you also can pass:
 
-- `artifact-name` - the default value it the same as [`actions-mn/build-and-publish`](https://github.com/actions-mn/build-and-publish)
+- `artifact-name` - the default value is the same as [`actions-mn/build-and-publish`](https://github.com/actions-mn/build-and-publish)
 - `source-dir` - source directory where 
 - `preview-branch` - GitHub Pages branch
-- `umbrella-dir` - directory in GitHub Pages branch where PR deployments stored
+- `umbrella-dir` - directory in the GitHub Pages branch where PR deployments are stored
 
 ## Complete example
 
@@ -84,7 +84,7 @@ jobs:
       uses: actions-mn/cache@v1
 
     - name: Metanorma generate site
-      uses: actions-mn/build-and-publish@v1
+      uses: actions-mn/build-and-publish@main
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         destination: artifact
