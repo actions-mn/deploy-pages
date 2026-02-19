@@ -1,5 +1,5 @@
-name: 'deploy-pages'
-description: 'Perform metanorma site generate and upload pages artifact'
+name: 'metanorma-deploy-pages'
+description: 'Deploy GitHub Pages with PR preview support for Metanorma sites'
 inputs:
   token:
     description: Required if destination='default'. Just pass `secrets.GITHUB_TOKEN`

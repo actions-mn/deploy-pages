@@ -2,9 +2,11 @@ name: test
 
 on:
   push:
-    branches:
-    - main
+    branches: [main]
   pull_request:
+
+permissions:
+  contents: read
 
 concurrency:
   group: '${{ github.workflow }}-${{ github.head_ref || github.ref_name }}'
@@ -12,12 +14,13 @@ concurrency:
 
 jobs:
   lint:
-    name: Lint
+    name: Lint Action YAML
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
 
-    - name: Yaml Lint
-      run: |
-        sudo apt-get install yamllint
-        yamllint action.yml
+      - name: Install yamllint
+        run: sudo apt-get install yamllint
+
+      - name: Lint action.yml
+        run: yamllint action.yml
