@@ -25,13 +25,13 @@ inputs:
 runs:
   using: "composite"
   steps:
-  - uses: actions/checkout@v4
+  - uses: actions/checkout@v6
     with:
       submodules: true
       lfs: true
 
   - if: ${{ github.event_name != 'pull_request' || github.event.action != 'closed' }}
-    uses: actions/download-artifact@v4
+    uses: actions/download-artifact@v7
     with:
       name: github-pages
       path: ${{ inputs.source-dir }}
@@ -53,6 +53,7 @@ runs:
       preview-branch: gh-pages
       umbrella-dir: pr-preview
       action: auto
+      qr-code: false
       token: ${{ inputs.token }}
 
   # on pull request close
@@ -63,5 +64,6 @@ runs:
       preview-branch: gh-pages
       umbrella-dir: pr-preview
       action: auto
+      qr-code: false
       token: ${{ inputs.token }}
 
